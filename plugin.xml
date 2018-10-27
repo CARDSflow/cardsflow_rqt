@@ -1,0 +1,14 @@
+<library path="lib/libcardsflow_rqt">
+  <class name="CardsflowRqt" type="CardsflowRqt" base_class_type="rqt_gui_cpp::Plugin">
+    <description>
+      Cardsflow plugin
+    </description>
+    <qtgui>
+      <group>
+        <label>CARDSflow</label>
+      </group>
+      <label>cardsflow plugin</label>
+      <statustip>Great user interface to provide real value.</statustip>
+    </qtgui>
+  </class>
+</library>
