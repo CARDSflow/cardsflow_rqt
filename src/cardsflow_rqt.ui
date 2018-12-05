@@ -39,7 +39,7 @@
     <rect>
      <x>0</x>
      <y>30</y>
-     <width>381</width>
+     <width>511</width>
      <height>731</height>
     </rect>
    </property>
@@ -51,7 +51,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>379</width>
+      <width>509</width>
       <height>729</height>
      </rect>
     </property>
@@ -86,10 +86,10 @@
   <widget class="QCustomPlot" name="current_plot" native="true">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>110</y>
-     <width>341</width>
-     <height>231</height>
+     <x>550</x>
+     <y>100</y>
+     <width>451</width>
+     <height>311</height>
     </rect>
    </property>
   </widget>
@@ -155,16 +155,6 @@
    </property>
    <property name="checked">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCustomPlot" name="target_plot" native="true">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>400</y>
-     <width>341</width>
-     <height>231</height>
-    </rect>
    </property>
   </widget>
   <widget class="QCheckBox" name="motor_13">
@@ -357,6 +347,16 @@
    </property>
    <property name="checked">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QCustomPlot" name="target_plot" native="true">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>420</y>
+     <width>461</width>
+     <height>311</height>
+    </rect>
    </property>
   </widget>
  </widget>
