@@ -8,6 +8,7 @@
 #include <roboy_middleware_msgs/ControlMode.h>
 #include <roboy_middleware_msgs/MotorCommand.h>
 #include <roboy_middleware_msgs/MotorConfigService.h>
+#include <roboy_simulation_msgs/CardsflowStatus.h>
 #include <QWidget>
 #include <QtQuick/QQuickView>
 #include <pluginlib/class_list_macros.h>
@@ -24,6 +25,9 @@
 #include <std_srvs/SetBool.h>
 
 #endif
+
+//TODO check in common utilities
+#define NUMBER_OF_MOTORS 8
 
 using namespace std;
 
@@ -45,13 +49,26 @@ public:
 public Q_SLOTS:
     void setPointChanged();
     void setPointChangedSlider();
+
+    void plotData();
+    void rescale();
+    void plotMotorChanged();
+    void toggleAll();
+    void fpgaChanged(int fpga);
+
+    Q_SIGNALS:
+    void newData();
+
 private:
+    int counter = 0;
+    bool plotMotor[NUMBER_OF_MOTORS];
     Ui::CardsflowRqt ui;
     QWidget *widget_;
     ros::NodeHandlePtr nh;
     vector<ros::Publisher> jointCommand;
     boost::shared_ptr<ros::AsyncSpinner> spinner;
-private:
+    void CardslfowStatusCallback(const roboy_simulation_msgs::CardsflowStatus::ConstPtr &msg);
+
     bool stopButton;
     vector<double> setpoint;
     vector<int> control_mode;
@@ -59,4 +76,12 @@ private:
     vector<string> joint_names;
     vector<QSlider*> setpoint_slider_widget;
     vector<QLineEdit*> setpoint_widget;
+
+    QVector<double> time;
+    int samples_per_plot = 300;
+    QVector<double> motorData[NUMBER_OF_MOTORS][2];
+    QColor color_pallette[16] = {Qt::blue, Qt::red, Qt::green, Qt::cyan, Qt::magenta, Qt::darkGray, Qt::darkRed, Qt::darkGreen,
+                                 Qt::darkBlue, Qt::darkCyan, Qt::darkMagenta, Qt::darkYellow, Qt::black, Qt::gray, Qt::green, Qt::cyan};
+    ros::Subscriber cardsflowStatus;
+    ros::Time start_time;
 };
