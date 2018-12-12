@@ -114,7 +114,7 @@ void CardsflowRqt::setPointChangedSlider(){
     std_msgs::Float32 msg;
     int joint = 0;
     for (auto slider:setpoint_slider_widget) {
-        double setpoint = (slider->value()-50.0)/100.0 * 220.0;
+        double setpoint = (slider->value()-50.0)/100.0 * 360.0;
         setpoint_widget[joint]->setText(QString::number(setpoint)+"/"+QString::number(setpoint*M_PI/180.0));
         msg.data = setpoint*M_PI/180.0;
         jointCommand[joint].publish(msg);
