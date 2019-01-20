@@ -122,4 +122,8 @@ void CardsflowRqt::setPointChangedSlider(){
     }
 }
 
-PLUGINLIB_DECLARE_CLASS(cardsflow_rqt, CardsflowRqt, CardsflowRqt, rqt_gui_cpp::Plugin)
+#if ROS_VERSION_MINOR == 14 // ros melodic
+    PLUGINLIB_EXPORT_CLASS(CardsflowRqt, rqt_gui_cpp::Plugin)
+#else // earlier
+    PLUGINLIB_DECLARE_CLASS(cardsflow_rqt, CardsflowRqt, CardsflowRqt, rqt_gui_cpp::Plugin)
+#endif
