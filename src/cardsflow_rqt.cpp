@@ -55,12 +55,12 @@ void CardsflowRqt::initPlugin(qt_gui_cpp::PluginContext &context) {
             QLabel *label = new QLabel(widget);
             char str[100];
             sprintf(str, "%s/%s", ef.c_str(), joint_name.c_str());
-            label->setFixedSize(100,30);
+            label->setFixedSize(200,30);
             label->setText(str);
             widget->layout()->addWidget(label);
 
             QLineEdit *line = new QLineEdit(widget);
-            line->setFixedSize(200,30);
+            line->setFixedSize(150,30);
             widget->layout()->addWidget(line);
             setpoint_widget.push_back(line);
             QObject::connect(line, SIGNAL(editingFinished()), this, SLOT(setPointChanged()));
