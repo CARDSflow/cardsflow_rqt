@@ -22,6 +22,7 @@
 #include <common_utilities/CommonDefinitions.h>
 #include <common_utilities/MotorConfig.hpp>
 #include <std_srvs/SetBool.h>
+#include <sensor_msgs/JointState.h>
 
 #endif
 
@@ -51,6 +52,7 @@ private:
     ros::NodeHandlePtr nh;
     vector<ros::Publisher> jointCommand;
     boost::shared_ptr<ros::AsyncSpinner> spinner;
+    bool vr_puppet = false;
 private:
     bool stopButton;
     vector<double> setpoint;

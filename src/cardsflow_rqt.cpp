@@ -40,6 +40,7 @@ void CardsflowRqt::initPlugin(qt_gui_cpp::PluginContext &context) {
     spinner->start();
 
     nh->getParam("/endeffectors", endeffectors);
+    nh->getParam("/vr_puppet", vr_puppet);
 
     int joint = 0;
     for(string ef:endeffectors) {
@@ -75,12 +76,19 @@ void CardsflowRqt::initPlugin(qt_gui_cpp::PluginContext &context) {
             QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(setPointChangedSlider()));
 
             motor_command_scrollarea->layout()->addWidget(widget);
-
-            ros::Publisher command = nh->advertise<std_msgs::Float32>((joint_name+"/"+joint_name+"/target").c_str(),1);
-            jointCommand.push_back(command);
+            if(!vr_puppet) {
+                ros::Publisher command = nh->advertise<std_msgs::Float32>(
+                        (joint_name + "/" + joint_name + "/target").c_str(), 1);
+                jointCommand.push_back(command);
+            }
 
             joint++;
         }
+    }
+    if(vr_puppet){
+        ros::Publisher command = nh->advertise<sensor_msgs::JointState>(
+                "/joint_targets", 1);
+        jointCommand.push_back(command);
     }
 }
 
@@ -102,23 +110,46 @@ void CardsflowRqt::setPointChanged(){
     std_msgs::Float32 msg;
     int joint = 0;
     bool ok;
+    sensor_msgs::JointState msg2;
+    msg2.name = joint_names;
     for (auto slider:setpoint_widget) {
         msg.data = slider->text().toDouble(&ok)*M_PI/180.0;
-        if(ok)
-            jointCommand[joint].publish(msg);
+        if(ok) {
+            if(!vr_puppet)
+                jointCommand[joint].publish(msg);
+            else{
+                msg2.position.push_back(slider->text().toDouble(&ok)*M_PI/180.0);
+                msg2.velocity.push_back(0);
+                msg2.effort.push_back(0);
+            }
+        }
         joint++;
+    }
+    if(vr_puppet){
+        jointCommand[0].publish(msg2);
     }
 }
 
 void CardsflowRqt::setPointChangedSlider(){
     std_msgs::Float32 msg;
+    sensor_msgs::JointState msg2;
+    msg2.name = joint_names;
     int joint = 0;
     for (auto slider:setpoint_slider_widget) {
         double setpoint = (slider->value()-50.0)/100.0 * 360.0;
         setpoint_widget[joint]->setText(QString::number(setpoint)+"/"+QString::number(setpoint*M_PI/180.0));
         msg.data = setpoint*M_PI/180.0;
-        jointCommand[joint].publish(msg);
+        if(!vr_puppet)
+            jointCommand[joint].publish(msg);
+        else{
+            msg2.position.push_back(setpoint*M_PI/180.0);
+            msg2.velocity.push_back(0);
+            msg2.effort.push_back(0);
+        }
         joint++;
+    }
+    if(vr_puppet){
+        jointCommand[0].publish(msg2);
     }
 }
 
